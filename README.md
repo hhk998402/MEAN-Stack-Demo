@@ -7,6 +7,7 @@ MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Profe
   <li>
     <b>Install NodeJS and NPM</b> on your system. You will find plenty of tutorials on how to do this on YouTube.<br>
     Verify that the installation is successful by executing the following commands from your terminal/CMD.
+    <img src="/setup-images/Node-NPM-Setup-Check.png">
   </li><br>
   <li><b>Install Angular-CLI</b></li><br>
   <li>
