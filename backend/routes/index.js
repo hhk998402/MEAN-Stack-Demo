@@ -1,10 +1,12 @@
 var express = require('express');
+const jwt = require("jsonwebtoken");
 var router = express.Router();
 var studentData = require("../models/Student.js");
 var courseData = require("../models/Course.js");
+var verifyToken = require("../auth/verifyToken.js");
 
 /* POST - Create/Add Course. */
-router.post('/addCourse', async(req,res) => {
+router.post('/addCourse', verifyToken, async(req,res) => {
   let course = new courseData(req.body);
 
   //Attempt to save to courseSchema
@@ -15,29 +17,51 @@ router.post('/addCourse', async(req,res) => {
     res.status(400);
     err.code === 11000 ? 
       res.json({code: 1, message: 'Duplicate Entry', error: err}) : 
-      (err.code !== 66 ?  
-        res.json({code: 1, message: 'Error, please check internet connection and try again', error: err}) : 
-        res.json({code: 2, message: 'Unknown error occurred', error: err})
-      );
+        res.json({code: 2, message: 'Error occurred while creating course', error: err});
   }
 });
 
-/* POST - Create/Add Student Details */
+/* POST - Register/Add Student Details */
 router.post('/addStudent', async(req,res) => {
   let student = new studentData(req.body);
-
-  //Attempt to save to studentSchema
+  
   try{
+    //Check if emailID is already registered
+    const emailIdExists = await studentData.findOne({email : student.email});
+    if(emailIdExists)
+      return res.status(400).send({code: 1, message: 'Email ID is already registered'});
+    
+    //Attempt to save to studentSchema
     const createStudent = await student.save();
-    res.status(200).json({code : 0,message : "Successfully added student data"});  
+    res.status(200).json({code : 0, message : "Successfully added student data"});  
   } catch(err){
     res.status(400);
     err.code === 11000 ? 
       res.json({code: 1, message: 'Duplicate Entry', error: err}) : 
-      (err.code !== 66 ?  
-        res.json({code: 1, message: 'Error, please check internet connection and try again', error: err}) : 
-        res.json({code: 2, message: 'Unknown error occurred', error: err})
-      );
+        res.json({code: 2, message: 'Error occurred while adding student details', error: err});
+  }
+});
+
+
+/* POST - Student Login */
+router.post('/studentLogin', async(req,res) => { 
+  try{
+    //Check if emailID is registered
+    const student = await studentData.findOne({email : req.body.email});
+    if(!student)
+      return res.status(400).send({code: 1, message: 'Email ID is not registered, please signup first'});
+
+    const isPasswordMatch = await student.comparePassword(req.body.password);
+    if(!isPasswordMatch)
+      return res.status(400).json({code: 1, message: "Incorrect email ID - password combination"});
+    
+    const token = jwt.sign({_id : student.studentId}, process.env.SECRET_TOKEN);
+    res.status(200).header("auth-token", token)
+      .json({code : 0, message : "Successfully logged in", token: token});
+
+  } catch(err){
+    res.status(400);
+        res.json({code: 2, message: 'Error occurred while performing student login', error: err});
   }
 });
 
