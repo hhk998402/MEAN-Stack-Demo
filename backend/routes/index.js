@@ -4,9 +4,13 @@ var router = express.Router();
 var studentData = require("../models/Student.js");
 var courseData = require("../models/Course.js");
 var verifyToken = require("../auth/verifyToken.js");
+var { generateRoleToken } = require("../auth/roleTokenController.js");
+var { permit } = require("../auth/permissions.js");
+const { roles } = require("../auth/roles.js");
+
 
 /* POST - Create/Add Course. */
-router.post('/addCourse', verifyToken, async(req,res) => {
+router.post('/addCourse', verifyToken, permit(roles.STUDENT), async(req,res) => {
   let course = new courseData(req.body);
 
   //Attempt to save to courseSchema
@@ -15,7 +19,7 @@ router.post('/addCourse', verifyToken, async(req,res) => {
     res.status(200).json({code : 0, message : "Successfully added course data"});  
   } catch(err){
     res.status(400);
-    err.code === 11000 ? 
+    err.code === 11000 ?
       res.json({code: 1, message: 'Duplicate Entry', error: err}) : 
         res.json({code: 2, message: 'Error occurred while creating course', error: err});
   }
@@ -26,10 +30,10 @@ router.post('/addStudent', async(req,res) => {
   let student = new studentData(req.body);
   
   try{
-    //Check if emailID is already registered
-    const emailIdExists = await studentData.findOne({email : student.email});
-    if(emailIdExists)
-      return res.status(400).send({code: 1, message: 'Email ID is already registered'});
+    //Check if studentId is already registered
+    const studentIdExists = await studentData.findOne({studentId : student.studentId});
+    if(studentIdExists)
+      return res.status(400).send({code: 1, message: 'Student ID is already registered'});
     
     //Attempt to save to studentSchema
     const createStudent = await student.save();
@@ -46,16 +50,21 @@ router.post('/addStudent', async(req,res) => {
 /* POST - Student Login */
 router.post('/studentLogin', async(req,res) => { 
   try{
-    //Check if emailID is registered
-    const student = await studentData.findOne({email : req.body.email});
+    //Check if studentId is registered
+    var student = await studentData.findOne({studentId : req.body.studentId});
     if(!student)
-      return res.status(400).send({code: 1, message: 'Email ID is not registered, please signup first'});
+      return res.status(400).send({code: 1, message: 'Student ID is not registered, please signup first'});
 
     const isPasswordMatch = await student.comparePassword(req.body.password);
     if(!isPasswordMatch)
-      return res.status(400).json({code: 1, message: "Incorrect email ID - password combination"});
+      return res.status(400).json({code: 1, message: "Incorrect student ID - password combination"});
     
-    const token = jwt.sign({_id : student.studentId}, process.env.SECRET_TOKEN);
+    student.permission.hashRoleToken = await generateRoleToken(student);
+    student.markModified('permission');
+    student.save();
+    const token = jwt.sign({
+      _id : student._id, 
+      roleToken : student.permission.hashRoleToken}, process.env.SECRET_TOKEN, {expiresIn : "1d"});
     res.status(200).header("auth-token", token)
       .json({code : 0, message : "Successfully logged in", token: token});
 

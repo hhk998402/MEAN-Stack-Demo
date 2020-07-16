@@ -16,6 +16,10 @@ const studentSchema = new mongoose.Schema({
             }          
         },
         password : { type: String, required : true},
+        permission : {
+            level : {type : String, default : "STUDENT", enum : ["STUDENT"]},
+            hashRoleToken : {type : String}
+        },
         marks : [{
             courseCode : { type: String},
             score : { type: Number,
@@ -54,11 +58,18 @@ studentSchema.statics.updateStudentProfile = function (studentId, name, dob) {
     });
 }
 
+//Method to check if password is correct or not
+studentSchema.methods.comparePassword = function(candidatePassword) {
+    return(bcrypt.compare(candidatePassword, this.password));
+};
+
 studentSchema.pre('save', function(next) {
     var self = this;
     console.log("DATA: " + self);
     // only hash the password if it has been modified (or is new)
-    if (!self.isModified('password')) return next();
+    if (!self.isModified('password')) {
+        return next();
+    }
 
     // generate a salt
     bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
@@ -74,10 +85,5 @@ studentSchema.pre('save', function(next) {
         });
     });
 });
-
-//Method to check if password is correct or not
-studentSchema.methods.comparePassword = function(candidatePassword) {
-    return(bcrypt.compare(candidatePassword, this.password));
-};
 
 module.exports = mongoose.model("Student", studentSchema);
