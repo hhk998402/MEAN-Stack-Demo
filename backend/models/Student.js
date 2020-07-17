@@ -26,7 +26,8 @@ const studentSchema = new mongoose.Schema({
                 min: [0, "Mark obtained can't be lesser than 0"], 
                 max: [100, "Mark obtained can't be more than 100"]
             }
-        }]
+        }],
+        lastUpdatedBy : {type: String, default: null}
     },
     { timestamps: 
         { createdAt: 'created_at' }
@@ -37,21 +38,21 @@ const studentSchema = new mongoose.Schema({
 studentSchema.index({ studentId: 1, email: 1 }, { unique: true});
 
 //Update student marks
-studentSchema.statics.updateMarks = function (studentId, marks) {
+studentSchema.statics.updateMarks = function (_id, marks) {
     console.log("Entered update marks function");
-    return this.findOneAndUpdate({studentId : studentId}, {$set: {marks : marks}}, {
+    return this.findOneAndUpdate({_id : _id}, {$set: {marks : marks}}, {
         new: true,
         runValidators: true
     });
 }
-//Update student marks
-studentSchema.statics.updateStudentProfile = function (studentId, name, dob) {
+//Update student profile
+studentSchema.statics.updateStudentProfile = function (_id, name, dob) {
     console.log("Entered update student profile function");
     console.log(name);
-    return this.findOneAndUpdate({studentId : studentId}, 
+    return this.findOneAndUpdate({_id : _id}, 
         {$set: {
             name : name, 
-            dob : dob
+            dob : dob         
         }}, {
         new: true,
         runValidators: true
