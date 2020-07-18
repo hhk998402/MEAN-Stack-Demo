@@ -3,13 +3,10 @@ const jwt = require("jsonwebtoken");
 let _ = require('lodash');
 var router = express.Router();
 var courseData = require("../models/Course.js");
-var { verifyToken } = require("../auth/jwtTokenController.js");
-var { permit } = require("../auth/permissions.js");
-const { roles } = require("../auth/roles.js");
 var { verifyObjectId } = require("../utils/dataValidation");
 
 /* POST - Create/Add Course. */
-router.post('/addCourse', verifyToken, permit(roles.ADMIN), async(req,res) => {
+router.post('/addCourse', async(req,res) => {
     let course = new courseData(_.pick(req.body, ['code','name']));
   
     //Attempt to save to courseSchema
@@ -25,7 +22,7 @@ router.post('/addCourse', verifyToken, permit(roles.ADMIN), async(req,res) => {
 });
 
 /* GET - Retrieve course details */
-router.get('/getCourseDetails/:_id', verifyObjectId, verifyToken, async(req,res) => {
+router.get('/getCourseDetails/:_id', verifyObjectId, async(req,res) => {
     const _id = req.params._id;
     try{
       const fetchCourse = await courseData.findOne({_id : _id});
@@ -42,7 +39,7 @@ router.get('/getCourseDetails/:_id', verifyObjectId, verifyToken, async(req,res)
 });
 
 /* DELETE - Delete Course */
-router.delete('/deleteCourse/:_id', verifyObjectId, verifyToken, permit(roles.ADMIN), async(req,res) => {
+router.delete('/deleteCourse/:_id', verifyObjectId, async(req,res) => {
     const _id = req.params._id;
     try{
       const deletedCourse = await courseData.findOneAndRemove({_id:_id});

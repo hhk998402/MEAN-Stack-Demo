@@ -3,9 +3,6 @@ const jwt = require("jsonwebtoken");
 let _ = require('lodash');
 var router = express.Router();
 var studentData = require("../models/Student.js");
-var { verifyToken, generateToken } = require("../auth/jwtTokenController.js");
-var { permit } = require("../auth/permissions.js");
-const { roles } = require("../auth/roles.js");
 var { verifyObjectId } = require("../utils/dataValidation");
 
 
@@ -30,31 +27,21 @@ router.post('/addStudent', async(req,res) => {
   }
 });
 
-
-/* POST - Student Login */
-router.post('/studentLogin', async(req,res) => { 
+/* GET - Retrieve list of all students */
+router.get('/getAllStudents', async(req,res) => {
   try{
-    //Check if studentId is registered
-    var student = await studentData.findOne({studentId : req.body.studentId});
-    if(!student)
-      return res.status(400).send({code: 1, message: 'Student ID is not registered, please signup first'});
-
-    const isPasswordMatch = await student.comparePassword(req.body.password);
-    if(!isPasswordMatch)
-      return res.status(400).json({code: 1, message: "Incorrect student ID - password combination"});
+    const allStudents = await studentData.find({}).select('name studentId email dob marks');
+    res.status(200).json({code : 0, message : allStudents});
     
-    const token = await generateToken(student);
-    res.status(200).header("auth-token", token)
-      .json({code : 0, message : "Successfully logged in", token: token});
-
-  } catch(err){
-    res.status(400);
-        res.json({code: 2, message: 'Error occurred while performing student login', error: err});
+  } catch(error){
+    res.status(400).json({code : 1, 
+      message : "Error while fetching student details",
+      error: error});
   }
 });
 
 /* GET - Retrieve student details */
-router.get('/getStudentDetails/:_id', verifyObjectId, verifyToken, permit(roles.OWN, roles.ADMIN), async(req,res) => {
+router.get('/getStudentDetails/:_id', verifyObjectId, async(req,res) => {
   try{
     const fetchStudent = await studentData.findOne({_id : req.params._id})
                                   .select('name studentId email dob marks');
@@ -71,11 +58,11 @@ router.get('/getStudentDetails/:_id', verifyObjectId, verifyToken, permit(roles.
 });
 
 /* PATCH - Update/Edit Student Details (Profile)*/
-router.patch('/updateStudentProfile/:_id', verifyObjectId, verifyToken, permit(roles.OWN), async(req,res) => {
+router.patch('/updateStudentProfile/:_id', verifyObjectId, async(req,res) => {
   try{
-    const student = await studentData.updateStudentProfile(req.user._id, req.body.name, req.body.dob);
+    const student = await studentData.updateStudentProfile(req.params._id, req.body.name, req.body.dob);
     student === null || student === undefined ? 
-        res.status(400).json({code: 1, 
+        res.status(400).json({code: 1,
           message: "Student Profile Update Failed - No entry found in table",
         }) : 
         res.status(200).json({code:0, 
@@ -91,7 +78,7 @@ router.patch('/updateStudentProfile/:_id', verifyObjectId, verifyToken, permit(r
 });
 
 /* PATCH - Update/Edit Student's marks. */
-router.patch('/updateMarks/:_id', verifyObjectId, verifyToken, permit(roles.ADMIN), async(req,res) => {
+router.patch('/updateMarks/:_id', verifyObjectId, async(req,res) => {
   try{
     const student = await studentData.updateMarks(req.params._id, req.body.marks);
     student === null || student === undefined ? 
@@ -111,7 +98,7 @@ router.patch('/updateMarks/:_id', verifyObjectId, verifyToken, permit(roles.ADMI
 });
 
 /* DELETE - Delete Student */
-router.delete('/deleteStudent/:_id', verifyObjectId, verifyToken, permit(roles.ADMIN), async(req,res) => {
+router.delete('/deleteStudent/:_id', verifyObjectId, async(req,res) => {
   try{
     const deletedStudent = await studentData.findOneAndRemove({_id:req.params._id});
     deletedStudent === null || deletedStudent === undefined ? 
