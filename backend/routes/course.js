@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 let _ = require('lodash');
 var router = express.Router();
 var courseData = require("../models/Course.js");
-var verifyToken = require("../auth/verifyToken.js");
+var { verifyToken } = require("../auth/jwtTokenController.js");
 var { permit } = require("../auth/permissions.js");
 const { roles } = require("../auth/roles.js");
 var { verifyObjectId } = require("../utils/dataValidation");
@@ -25,7 +25,7 @@ router.post('/addCourse', verifyToken, permit(roles.ADMIN), async(req,res) => {
 });
 
 /* GET - Retrieve course details */
-router.get('/getCourseDetails/:_id', verifyObjectId, verifyToken, permit(roles.ADMIN), async(req,res) => {
+router.get('/getCourseDetails/:_id', verifyObjectId, verifyToken, async(req,res) => {
     const _id = req.params._id;
     try{
       const fetchCourse = await courseData.findOne({_id : _id});

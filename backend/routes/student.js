@@ -3,8 +3,7 @@ const jwt = require("jsonwebtoken");
 let _ = require('lodash');
 var router = express.Router();
 var studentData = require("../models/Student.js");
-var verifyToken = require("../auth/verifyToken.js");
-var { generateRoleToken } = require("../auth/roleTokenController.js");
+var { verifyToken, generateToken } = require("../auth/jwtTokenController.js");
 var { permit } = require("../auth/permissions.js");
 const { roles } = require("../auth/roles.js");
 var { verifyObjectId } = require("../utils/dataValidation");
@@ -44,12 +43,7 @@ router.post('/studentLogin', async(req,res) => {
     if(!isPasswordMatch)
       return res.status(400).json({code: 1, message: "Incorrect student ID - password combination"});
     
-    student.permission.hashRoleToken = await generateRoleToken(student);
-    student.markModified('permission');
-    student.save();
-    const token = jwt.sign({
-      _id : student._id, 
-      roleToken : student.permission.hashRoleToken}, process.env.SECRET_TOKEN, {expiresIn : "1d"});
+    const token = await generateToken(student);
     res.status(200).header("auth-token", token)
       .json({code : 0, message : "Successfully logged in", token: token});
 

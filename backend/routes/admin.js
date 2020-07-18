@@ -3,8 +3,7 @@ const jwt = require("jsonwebtoken");
 let _ = require('lodash');
 var router = express.Router();
 var adminData = require("../models/Admin.js");
-var verifyToken = require("../auth/verifyToken.js");
-var { generateRoleToken } = require("../auth/roleTokenController.js");
+var { verifyToken, generateToken } = require("../auth/jwtTokenController.js");
 var { permit } = require("../auth/permissions.js");
 const { roles } = require("../auth/roles.js");
 
@@ -43,12 +42,7 @@ router.post('/addAdmin', async(req,res) => {
       if(!isPasswordMatch)
         return res.status(400).json({code: 1, message: "Incorrect email ID - password combination"});
       
-      admin.permission.hashRoleToken = await generateRoleToken(admin);
-      admin.markModified('permission');
-      admin.save();
-      const token = jwt.sign({
-        _id : admin._id, 
-        roleToken : admin.permission.hashRoleToken}, process.env.SECRET_TOKEN, {expiresIn : "1d"});
+      const token = await generateToken(admin);
       res.status(200).header("auth-token", token)
         .json({code : 0, message : "Successfully logged in", token: token});
   

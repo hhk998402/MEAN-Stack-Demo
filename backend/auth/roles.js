@@ -1,21 +1,21 @@
 const roles = {
     STUDENT : {
         name: "STUDENT",
-        condition: null,
-        model: require("../models/Student.js")
+        condition: (req) => {
+            return(req.user.role.toUpperCase() === "STUDENT");
+        }
     },
     OWN : {
         name: "OWN",
-        condition: (idFromToken, idFromBody) => {
-            // console.log("ID1" , idFromToken);
-            // console.log("ID2" , idFromBody);
-            return(idFromToken.toLowerCase() === idFromBody.toLowerCase());
+        condition: (req) => {
+            return(req.user._id.toLowerCase() === req.params._id.toLowerCase());
         }
     },
     ADMIN : {
         name: "ADMIN",
-        condition: null,
-        model: require('../models/Admin.js')
+        condition: (req) => {
+            return(req.user.role.toUpperCase() === "ADMIN");
+        }
     }
 };
 

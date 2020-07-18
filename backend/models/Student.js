@@ -16,18 +16,14 @@ const studentSchema = new mongoose.Schema({
             }          
         },
         password : { type: String, required : true},
-        permission : {
-            level : {type : String, default : "STUDENT", enum : ["STUDENT"]},
-            hashRoleToken : {type : String}
-        },
+        permissionLevel : {type : String, default : "STUDENT", enum : ["STUDENT"], uppercase: true},
         marks : [{
             courseCode : { type: String},
             score : { type: Number,
                 min: [0, "Mark obtained can't be lesser than 0"], 
                 max: [100, "Mark obtained can't be more than 100"]
             }
-        }],
-        lastUpdatedBy : {type: String, default: null}
+        }]
     },
     { timestamps: 
         { createdAt: 'created_at' }

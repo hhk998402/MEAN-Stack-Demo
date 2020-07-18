@@ -14,10 +14,7 @@ const adminSchema = new mongoose.Schema({
             unique : true     
         },
         password : { type: String, required : true},
-        permission : {
-            level : {type : String, default : "ADMIN", enum : ["ADMIN"]},
-            hashRoleToken : {type : String}
-        }
+        permissionLevel: {type : String, default : "ADMIN", enum : ["ADMIN"], uppercase: true}
     },
     { timestamps: 
         { createdAt: 'created_at' }
