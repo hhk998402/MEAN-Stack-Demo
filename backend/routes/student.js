@@ -49,7 +49,7 @@ router.get('/getStudentDetails/:_id', verifyObjectId, async(req,res) => {
         res.status(400).json({code: 1,
           message: "No entry found for this studentId",
         }) : 
-        res.status(200).json({code : 0, message : fetchStudent});
+        res.status(200).json({code : 0, message : "Successfully fetched student detail", data : fetchStudent});
       } catch(error){
     res.status(400).json({code : 1, 
       message : "Error while fetching student details",
@@ -80,14 +80,20 @@ router.patch('/updateStudentProfile/:_id', verifyObjectId, async(req,res) => {
 /* PATCH - Update/Edit Student's marks. */
 router.patch('/updateMarks/:_id', verifyObjectId, async(req,res) => {
   try{
-    const student = await studentData.updateMarks(req.params._id, req.body.marks);
-    student === null || student === undefined ? 
-        res.status(400).json({code: 1, 
-          message: "Marks Update Failed - No entry found in table"
-        }) : 
-        res.status(200).json({code:0, 
-          message: "Marks updated succesfully"
-        });
+    if(req.body.marks === null)
+      res.status(400).json({code: 1, 
+        message: "Marks Update Failed - No marks were entered"
+      });
+    else{
+      const student = await studentData.updateMarks(req.params._id, req.body.marks);
+      student === null || student === undefined ? 
+          res.status(400).json({code: 1, 
+            message: "Marks Update Failed - No entry found in table"
+          }) : 
+          res.status(200).json({code:0, 
+            message: "Marks updated succesfully"
+          });
+    }
   } catch (error){
     console.log("DBError: " + error);
     res.status(400).json({code: 1, 

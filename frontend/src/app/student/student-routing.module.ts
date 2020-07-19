@@ -5,6 +5,7 @@ import { StudentRoutesService } from './all-routes/service/student-routes.servic
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AddStudentComponent } from './add-student/add-student.component';
+import { UpdateStudentMarksComponent } from './update-student-marks/update-student-marks.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: "createStudent",
     component: AddStudentComponent
+  },
+  {
+    path: "updateStudentMarks/:_id",
+    component: UpdateStudentMarksComponent
   }
 ];
 

@@ -1,0 +1,76 @@
+<div class="jumbotron jumbotron-fluid" id="jumbotron-header">
+    <div class="container">
+        <h1 class="display-6">MEAN Stack Demo</h1>
+        <p class="lead" [innerHTML]="pageDescription"></p>
+    </div>
+</div>
+
+<div class="loading-spinner" *ngIf="isLoading">
+    <div class="loader-overlay"></div>
+    <div class="loader"></div>
+</div>
+
+<div class = "container">
+    <h5>Update Student Marks</h5>
+
+    <!-- Using child component to show errors -->
+    <app-message-handling [errorResponse]=apiError></app-message-handling>
+    <!-- Using child component to show success message -->
+    <app-message-handling [successResponse]=apiSuccess></app-message-handling>
+
+    <form class="formEntry" *ngIf="apiSuccess?.code == 0" #f="ngForm" (ngSubmit)="updateStudentMarks(f)">
+        <div class="form-group row">
+            <label for="staticName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticName" value="{{ apiSuccess?.data?.name }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticStudentId" class="col-sm-2 col-form-label">Student ID</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticStudentId" value="{{ apiSuccess?.data?.studentId }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{ apiSuccess?.data?.email }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticDOB" class="col-sm-2 col-form-label">Date of Birth</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticDOB" value="{{ apiSuccess?.data?.dob }}">
+            </div>
+        </div>
+        <div class="form-group row" *ngFor="let course of apiSuccess?.data?.marks; let i = index;">
+            <label for="courseCode" class="col-sm-1 col-form-label">Course Code</label>
+            <div class="col-sm-2">
+                <input type="text" [value]="course.courseCode" readonly class="form-control" id="courseCode" name="courseCode-{{ (i)+1 }}">
+            </div>
+            <label for="marks" class="col-sm-2 col-form-label">Existing Marks</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control" readonly id="oldMarks" value="{{ course.score }}">
+            </div>
+            <label for="marks" class="col-sm-2 col-form-label">New Marks</label>
+            <div class="col-sm-2">
+                <input type="number" class="form-control" name="score-{{ course.courseCode }}" ngModel>
+            </div>
+            <div class="col-sm-1">
+               <button (click)="removeCourse(i)" type="button">Remove course</button>
+            </div>
+        </div>
+        <form #f1="ngForm" (ngSubmit)="addCourse(f1)">
+            <div class="form-group row">
+                <label for="courseCode" class="col-sm-2 col-form-label">Course Code</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="newCourseCode" name="newCourseCode" ngModel>
+                </div>
+                <div class="col-sm-2">
+                   <button class="btn btn-success" type="submit">Add course</button>
+                </div>
+            </div>
+        </form>
+    
+        <button type="submit" class="btn btn-primary">Update Student Marks</button>
+    </form>

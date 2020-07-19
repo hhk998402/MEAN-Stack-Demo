@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentRoutesService } from './service/student-routes.service';
 import { Subscription, Observable } from 'rxjs';
-import { ApiResponseFormat } from '../model/api-response-format';
 import { Router } from '@angular/router';
 
 
@@ -57,6 +56,10 @@ export class AllRoutesComponent implements OnInit {
           console.log("Error", this.apiError);
         }
       );
+  };
+
+  public updateStudentMarks(event, _id) {
+    this.router.navigate(['/student/updateStudentMarks/' + _id]);
   };
 
   reloadPage(){
