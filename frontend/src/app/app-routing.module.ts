@@ -1,5 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ViewChild, AfterViewInit } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { HomePageComponent } from './home-page/home-page.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -9,8 +11,16 @@ const routes: Routes = [
   },
   {
     path: "home",
-    loadChildren: () => 
-      import("./general/general.module").then(m => m.GeneralModule)
+    component: HomePageComponent
+  },
+  {
+    path: "student",
+    loadChildren : () => 
+      import("./student/student.module").then(m => m.StudentModule)
+  },
+  {
+    path: "**",
+    component: PageNotFoundComponent
   }
 ];
 

@@ -1,0 +1,54 @@
+<div class="jumbotron jumbotron-fluid" id="jumbotron-header">
+    <div class="container">
+        <h1 class="display-6">MEAN Stack Demo</h1>
+        <p class="lead" [innerHTML]="pageDescription"></p>
+    </div>
+</div>
+
+<div class="loading-spinner" *ngIf="isLoading">
+    <div class="loader-overlay"></div>
+    <div class="loader"></div>
+</div>
+
+<div class = "container">
+    <h5>Click on one of the following operations</h5>
+    <div class = "text-right">
+        <button type="button" class="btn btn-outline-dark" onclick="window.open('/student/createStudent')">Add a new student</button>
+    </div>
+
+    <!-- Using child component to show errors -->
+    <app-message-handling [errorResponse]=apiError></app-message-handling>
+    <!-- Using child component to show success message -->
+    <app-message-handling [successResponse]=apiSuccess></app-message-handling>
+
+    <div class="row" *ngIf="apiSuccess?.code == 0">
+        <div class = "col-md-12" *ngFor="let student of apiSuccess.data">
+            <div class="card studentCard" >
+                <h5 class="card-header">{{ student.name }}</h5>
+                <div class="card-body">
+                <p class="card-text"><b>Student ID:</b> {{ student.studentId }}<br>
+                    <b>Date Of Birth:</b> {{ student.dob }}<br>
+                    <b>Email ID:</b> {{ student.email }}<br>
+                </p>
+                <table class="table" *ngIf="student?.marks.length > 0">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Course Code</th>
+                        <th scope="col">Marks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let course of student.marks; let rowNum = index">
+                        <th scope="row">{{ (rowNum)+1 }}</th>
+                        <td>{{course.courseCode}}</td>
+                        <td>{{course.score}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                <button (click)="deleteStudent($event, student._id)" class="btn btn-danger">Delete Student</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

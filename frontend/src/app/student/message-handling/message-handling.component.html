@@ -1,0 +1,15 @@
+<!-- Template to handle situation when error occurs in API call -->
+<div class="alert alert-danger apiAlertMessage" role="alert" *ngIf="errorResponse?.error">
+    <span><b>An error occurred while trying to execute this operation</b><br></span>
+    <span><b>Error Message:</b> {{ errorResponse?.message }}<br></span>
+    <span *ngIf="errorResponse?.error?.error?.message">
+        <b>Details:</b> {{ errorResponse?.error?.error?.message }}<br>
+    </span>
+</div>
+
+<div class="alert alert-success apiAlertMessage" role="alert" *ngIf="successResponse?.code == 0">
+    <strong>SUCCESS: </strong> {{ successResponse?.message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>

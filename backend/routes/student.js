@@ -31,8 +31,8 @@ router.post('/addStudent', async(req,res) => {
 router.get('/getAllStudents', async(req,res) => {
   try{
     const allStudents = await studentData.find({}).select('name studentId email dob marks');
-    res.status(200).json({code : 0, message : allStudents});
-    
+    res.status(200).json({code : 0, message : "Fetched all students data", data: allStudents});
+
   } catch(error){
     res.status(400).json({code : 1, 
       message : "Error while fetching student details",
