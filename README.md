@@ -51,3 +51,17 @@ MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Profe
     nodemon ./bin/www
     ```
   - The backend server will be running on http://localhost:3000
+  
+### Frontend Setup
+- Assuming that you have already `cloned` this repo, (if not go to the first instruction in backend setup), let's proceed with the frontend setup.
+- Note, this step requires that you have `Angular-CLI` installed, if not go to the 2nd pre-requisite instruction.
+- #### Install the required packages
+  ```
+  cd frontend
+  npm install
+  ```
+- #### Start the frontend application
+  ```
+  ng serve
+  ```
+  Frontend application should be running on http://localhost:4200
