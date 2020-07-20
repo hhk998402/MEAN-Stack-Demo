@@ -22,7 +22,7 @@ MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Profe
   </li><br>
 </ol>
 
-### Fetch the project code
+### Fetch the Project Code
 - #### Clone this repo into a suitable folder on your local system
   ```
   git clone https://github.com/hhk998402/MEAN-Stack-Demo.git
@@ -61,7 +61,7 @@ MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Profe
   - The backend server will be running on http://localhost:3000
   
 ### Frontend Setup
-- Assuming that you have already `cloned` this repo, (if not go to the first instruction in backend setup), let's proceed with the frontend setup.
+- Assuming that you have already `cloned` this repo, (if not go to the `Fetch the Project Code` section), let's proceed with the frontend setup.
 - Note, this step requires that you have `Angular-CLI` installed, if not go to the 2nd pre-requisite instruction.
 - #### Install the required packages
   ```
