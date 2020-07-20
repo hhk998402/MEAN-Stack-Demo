@@ -22,15 +22,23 @@ MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Profe
   </li><br>
 </ol>
 
-### Backend Setup
+### Fetch the project code
 - #### Clone this repo into a suitable folder on your local system
   ```
   git clone https://github.com/hhk998402/MEAN-Stack-Demo.git
+  cd MEAN-Stack-Demo
   ```
+- #### `IMPORTANT:` If the `only CRUD` application is to be run, then switch to the `only-CRUD` branch
+  ```
+  git fetch --all
+  git checkout --track origin/only-CRUD
+  ```
+
+### Backend Setup
 - #### Install the required packages
   Note, this step requires that you have NodeJS and NPM installed
   ```
-  cd MEAN-Stack-Demo/backend #Navigate into backend folder
+  cd backend #Navigate into backend folder
   npm install  
   ```
 - #### Create a `.env` file within the `backend` folder and paste the following content into it
