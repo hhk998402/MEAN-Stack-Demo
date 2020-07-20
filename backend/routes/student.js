@@ -62,7 +62,7 @@ router.get('/getStudentDetails/:_id', verifyObjectId, verifyToken, permit(roles.
         res.status(400).json({code: 1,
           message: "No entry found for this studentId",
         }) : 
-        res.status(200).json({code : 0, message : fetchStudent});
+        res.status(200).json({code : 0, message : "Successfully fetched student detail", data: fetchStudent});
       } catch(error){
     res.status(400).json({code : 1, 
       message : "Error while fetching student details",
