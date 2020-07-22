@@ -42,13 +42,19 @@ MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Profe
   npm install  
   ```
 - #### Create a `.env` file within the `backend` folder and paste the following content into it
-  ```
-  MONGO_DB_URL=(paste-your-mongodb-connection-URI)
-  ```
-  The URL will be in the following format, with `dummyUserName`, `dummyPassword`, `hostName`, `portNumber`, and `dbName` having to be altered to the URL you get after completing step 3 in the pre-requisites.
-  ```
-  MONGO_DB_URL=mongodb://dummyUserName:dummyPassword@hostName:portNumber/dbName
-  ```
+  - Add MongoDB URL to `.env` file. `Note: Remove the '<' and '>' brackets.`
+    ```
+    MONGO_DB_URL=<paste-your-mongodb-connection-URI>
+    ```
+    The URL will be in the following format, with `dummyUserName`, `dummyPassword`, `hostName`, `portNumber`, and `dbName` having to be altered to the URL you get after completing step 3 in the pre-requisites.
+    ```
+    MONGO_DB_URL=mongodb://dummyUserName:dummyPassword@hostName:portNumber/dbName
+    ```
+  - Add JWT secret token to `.env` file. This token will be used for signing and verifying your `JSON Web Tokens`. `Note: Remove the '<' and '>' brackets.`
+      ```
+      SECRET_TOKEN=<enter-your-secret-token-string>
+      ```
+      As a good practice, make sure the secret token is not a common word/string. Use a random string consisting of alphabets, numbers and special characters.
 - #### Start the backend server.
   - Using `npm start`
     ```
