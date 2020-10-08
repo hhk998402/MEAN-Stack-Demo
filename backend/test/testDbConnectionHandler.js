@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+require('custom-env').env(process.env.NODE_ENV);
 
-const mongod = new MongoMemoryServer();
+const mongod = new MongoMemoryServer(process.env.MONGO_DB_URL);
 
 /**
  * Connect to the in-memory database.
  */
 module.exports.connect = async () => {
-    const uri = await mongod.getUri();
+    const uri = process.env.MONGO_DB_URL;
+    console.log("TEST MongoDB URL: " + uri);
 
     const mongooseOpts = {
         useNewUrlParser: true,
@@ -21,9 +23,14 @@ module.exports.connect = async () => {
  * Drop database, close the connection and stop mongod.
  */
 module.exports.closeDatabase = async () => {
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
-    await mongod.stop();
+    try{
+        await mongoose.connection.dropDatabase();
+        await mongoose.connection.close();
+        await mongod.stop();
+    } catch(error){
+        console.error("Error while closing database after completing all tests. Error: " + error);
+    }
+    
 }
 
 /**

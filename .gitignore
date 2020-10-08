@@ -139,4 +139,7 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Ignore jest mongodb config file
+globalConfig.json
+
 # End of https://www.toptal.com/developers/gitignore/api/node,angular

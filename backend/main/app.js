@@ -3,13 +3,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require('cors');
 
 var studentRouter = require('./routes/student');
 var courseRouter = require('./routes/course');
 var adminRouter = require('./routes/admin');
-dotenv.config();
+console.log("NODE_ENV = " + process.env.NODE_ENV);
+require('custom-env').env(process.env.NODE_ENV);
 
 let app = express();
 
