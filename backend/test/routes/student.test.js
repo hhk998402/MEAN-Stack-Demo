@@ -32,7 +32,6 @@ describe('Testing the student API routes ', () => {
      */
     it('tests that a valid student can be added without throwing any errors', async () => {
         const response = await supertest(app).post('/student/addStudent').send(studentTestData.validStudentEntry);
-        console.log(response);
     
         expect(response.status).toBe(200);
         expect(response.body.code).toBe(0);
