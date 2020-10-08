@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./main/bin/www",
-    "test": "cross-env NODE_ENV=test jest --runInBand --coverage ./test"
+    "test": "cross-env NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit ./test"
   },
   "jest": {
+    "bail": true,
     "testEnvironment": "node"
   },
   "dependencies": {
