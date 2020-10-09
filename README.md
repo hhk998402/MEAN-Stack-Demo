@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/hhk998402/MEAN-Stack-Demo/badge.svg?branch=feature/add-end-to-end-tests)](https://coveralls.io/github/hhk998402/MEAN-Stack-Demo?branch=feature/add-end-to-end-tests)
+[![Coverage Status](https://coveralls.io/repos/github/hhk998402/MEAN-Stack-Demo/badge.svg?branch=only-CRUD)](https://coveralls.io/github/hhk998402/MEAN-Stack-Demo?branch=only-CRUD)
 # MEAN-Stack-Demo
 MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Professor, Information Science Department, MSRIT).
 
