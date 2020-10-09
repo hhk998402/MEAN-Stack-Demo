@@ -21,7 +21,8 @@ jobs:
           echo SECRET_TOKEN=testingToken >> ./backend/.env.test && 
           cat ./backend/.env.test
     - run: touch ./backend/.coveralls.yml &&
-          echo "repo_token: ${{ secrets.REPO_KEY }}" >> ./backend/.coveralls.yml
+          echo "repo_token:" >> ./backend/.coveralls.yml
+          echo " ${{ secrets.REPO_TOKEN }}" >> ./backend/.coveralls.yml"
           cat ./backend/.coveralls.yml
     - run: cd backend && npm run coveralls
       env:
