@@ -22,7 +22,7 @@ jobs:
           cat ./backend/.env.test
     - run: touch ./backend/.coveralls.yml &&
           echo -n "repo_token:" >> ./backend/.coveralls.yml && 
-          echo " ${{ secrets.REPO_TOKEN }}" >> ./backend/.coveralls.yml &&
+          echo " ${{ secrets.REPO_TOKEN }}" >> ./backend/.coveralls.yml
     - run: cd backend && npm run coveralls
       env:
         CI: true
