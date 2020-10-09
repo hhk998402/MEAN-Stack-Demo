@@ -20,7 +20,7 @@ jobs:
           echo MONGO_DB_URL=mongodb://127.0.0.1:27001/jest >> ./backend/.env.test && 
           echo SECRET_TOKEN=testingToken >> ./backend/.env.test && 
           cat ./backend/.env.test
-    - run: cd backend && npm test
+    - run: cd backend && npm run coveralls
       env:
         CI: true
     - name: Coveralls

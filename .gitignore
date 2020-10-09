@@ -142,4 +142,7 @@ dist
 # Ignore jest mongodb config file
 globalConfig.json
 
+#Ignore coveralls files
+backend/.coveralls.yml
+
 # End of https://www.toptal.com/developers/gitignore/api/node,angular
