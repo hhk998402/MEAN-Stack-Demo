@@ -17,10 +17,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Create .env.test file
+        run: |
+          touch .env.test
+          echo MONGO_DB_URL=mongodb://127.0.0.1:27001/jest >> .env
+          echo SECRET_TOKEN=testingToken >> .env
+          cat .env.test
     - run: cd backend && npm install
     - run: cd backend && npm run build --if-present
     - run: cd backend && npm test
       env:
         CI: true,
         MONGO_DB_URL: mongodb://127.0.0.1:27001/jest,
-        SECRET_TOKEN: testingToken,
+        SECRET_TOKEN: testingToken
