@@ -29,7 +29,7 @@ afterAll(async done => {
 });
 
 /**
- * Product test suite.
+ * Student API test suite.
  */
 describe('Testing the student API routes ', () => {
 
