@@ -90,3 +90,15 @@ function onListening() {
   debug('Listening on ' + bind);
   console.log("App listening on port: " + port);
 }
+
+const stop = (callback => {
+  console.log("Completed running all tests, closing server");
+  server.close(async() => {
+    console.log("Closed the server");
+    callback();
+  });
+});
+
+module.exports = {
+  stop
+}

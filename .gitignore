@@ -102,7 +102,7 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+.env.production
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -138,5 +138,11 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# Ignore jest mongodb config file
+globalConfig.json
+
+#Ignore coveralls files
+backend/.coveralls.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/node,angular
