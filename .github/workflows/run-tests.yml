@@ -1,16 +1,13 @@
 name: Node.js CI
 
-on: [push]
+on: ["push", "pull_request"]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [10.x]
-
+        node-version: [10.x, 12.x]
     steps:   
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -25,6 +22,14 @@ jobs:
           cat ./backend/.env.test
     - run: cd backend && npm test
       env:
-        CI: true,
-        MONGO_DB_URL: mongodb://127.0.0.1:27001/jest,
-        SECRET_TOKEN: testingToken
+        CI: true
+  
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./main/bin/www",
-    "test": "cross-env NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit ./test && cat ./coverage/lcov.info | coveralls"
+    "test": "cross-env NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit ./test && coveralls < coverage/lcov.info"
   },
   "jest": {
     "bail": true,
