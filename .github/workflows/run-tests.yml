@@ -29,7 +29,7 @@ jobs:
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-        files: ./backend/coverage/lcov.info,./frontend/coverage/lcov.info # optional
+        files: ./backend/coverage/lcov.info,./frontend/coverage/frontend/lcov.info # optional
         flags: MEAN-Stack-Demo-TESTS # optional
         name: codecov-test-coverage # optional
         fail_ci_if_error: true # optional (default = false)
