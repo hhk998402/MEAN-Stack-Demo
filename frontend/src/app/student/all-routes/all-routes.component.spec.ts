@@ -1,7 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AllRoutesComponent } from './all-routes.component';
-import { MessageHandlingComponent } from '../message-handling/message-handling.component';
+import { MessageHandlingComponent, MessageHandlingStubComponent } from '../message-handling/message-handling.component';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AllRoutesComponent', () => {
   let component: AllRoutesComponent;
@@ -9,7 +11,8 @@ describe('AllRoutesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AllRoutesComponent ]
+      declarations: [ AllRoutesComponent, MessageHandlingStubComponent ],
+      imports: [ HttpClientTestingModule, RouterTestingModule ]
     })
     .compileComponents();
   }));
