@@ -1,5 +1,5 @@
-[![Actions Status](https://github.com/hhk998402/MEAN-Stack-Demo/workflows/Node.js%20CI/badge.svg)](https://github.com/hhk998402/MEAN-Stack-Demo/actions)
-[![Coverage Status](https://coveralls.io/repos/github/hhk998402/MEAN-Stack-Demo/badge.svg?branch=only-CRUD)](https://coveralls.io/github/hhk998402/MEAN-Stack-Demo?branch=only-CRUD)
+[![Actions Status](https://github.com/hhk998402/MEAN-Stack-Demo/workflows/Node.js%20Backend%20CI/badge.svg)](https://github.com/hhk998402/MEAN-Stack-Demo/actions)
+[![Coverage Status](https://coveralls.io/repos/github/hhk998402/MEAN-Stack-Demo/badge.svg?branch=feature/add-frontend-tests)](https://coveralls.io/github/hhk998402/MEAN-Stack-Demo?branch=feature/add-frontend-tests)
 # MEAN-Stack-Demo
 MEAN Stack demo application prepared under the guidance of Mydhili K Nair (Professor, Information Science Department, MSRIT).
 
