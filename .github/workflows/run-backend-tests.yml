@@ -1,4 +1,4 @@
-name: Node.js Backend CI
+name: MEAN Stack CI
 
 on: ["push", "pull_request"]
 
@@ -26,6 +26,9 @@ jobs:
     - run: cd backend && npm run coveralls
       env:
         CI: true
+    - name: Run Angular App tests
+    - run: cd frontend && npm install
+    - run: cd frontend/src/app && npm run coveralls
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
