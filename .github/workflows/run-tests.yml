@@ -18,18 +18,20 @@ jobs:
     - run: cd backend && npm run build --if-present
     - run: touch ./backend/.env.test && 
           echo MONGO_DB_URL=mongodb://127.0.0.1:27001/jest >> ./backend/.env.test && 
-          echo SECRET_TOKEN=testingToken >> ./backend/.env.test && 
+          echo SECRET_TOKEN=testingToken >> ./backend/.env.test &&
+          echo "CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }}" >> ./backend/.env.test &&
           cat ./backend/.env.test
-    - run: touch ./backend/.coveralls.yml &&
-          echo -n "repo_token:" >> ./backend/.coveralls.yml && 
-          echo " ${{ secrets.REPO_TOKEN }}" >> ./backend/.coveralls.yml
-    - run: cd backend && npm run coveralls
+    - run: cd backend && npm run test
       env:
         CI: true
     - run: cd frontend && npm install
-    - run: cd frontend/src/app && npm run coveralls
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+    - run: cd frontend/src/app && npm run codecov
+    - name: Codecov report
+      uses: actions/checkout@master
+      uses: codecov/codecov-action@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./backend/coverage/lcov.info
+        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+        files: ./backend/coverage/lcov.info,./frontend/coverage/lcov.info # optional
+        flags: MEAN-Stack-Demo-TESTS # optional
+        name: codecov-test-coverage # optional
+        fail_ci_if_error: true # optional (default = false)

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./main/bin/www",
-    "coveralls": "cross-env NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit ./test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "codecov": "cross-env NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit ./test && eval \"$(grep ^CODECOV_TOKEN= .env.test)\" && codecov -t $CODECOV_TOKEN", 
     "test": "cross-env NODE_ENV=test jest --runInBand --coverage --detectOpenHandles --forceExit ./test"
   },
   "jest": {
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
-    "coveralls": "^3.1.0",
+    "codecov": "^3.8.0",
     "jest": "^26.5.2",
     "mongodb-memory-server": "^6.9.1",
     "nodemon": "^2.0.4",
